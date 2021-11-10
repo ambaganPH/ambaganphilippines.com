@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Welcome to Ambagan Philippines</title>
+        <title>Login: Ambagan Philippines</title>
         <!-- Favicon-->
         <link rel="icon" href="assets/ambaganPH_favicon.ico" />
         <!-- Font Awesome icons (free version)-->
@@ -27,25 +27,44 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#volunteerism">Volunteerism</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#activities">Activities</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#organization">Organization</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#beavolunteer">Be A Volunteer!</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#volunteerism">Volunteerism</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#activities">Activities</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#organization">Organization</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#beavolunteer">Be A Volunteer!</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- Be A Volunteer-->
-        <section class="page-section" id="beavolunteer">
+                <!-- Masthead-->
+        <header class="masthead">
             <div class="container">
-                <div class="text-center">
                     <h2 class="section-heading text-uppercase">Be A Volunteer! Sign Up Now!</h2>
                     <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                </div>
-                
+                    <form id="loginForm">
+                    <div class="row align-items-stretch mb-5">
+                        <center>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <!-- Email address input-->
+                                <input class="form-control" id="email" type="email" placeholder="Your Email *"/>
+                                <div class="invalid-feedback">An email is required.</div>
+                                <div class="invalid-feedback">Email is not valid.</div>
+                            </div>
+                            <br>
+                            <div class="form-group mb-md-0">
+                                <!-- Phone number input-->
+                                <input class="form-control" id="password" type="password" placeholder="Your Password *"/>
+                                <div class="invalid-feedback">A phone number is required.</div>
+                            </div>
+                            <br>
+                            <button type="submit" class="button button-block"/>Get Started</button>
+                        </div>
+                    </center>
+                    </div>
+                </form>
             </div>
-        </section>
+        </header>
         <!-- Footer-->
         <footer class="footer py-4">
             <div class="container">
