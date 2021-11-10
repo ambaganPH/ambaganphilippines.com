@@ -1,97 +1,43 @@
-/*!
-* Start Bootstrap - Agency v7.0.10 (https://startbootstrap.com/theme/agency)
-* Copyright 2013-2021 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-agency/blob/master/LICENSE)
-*/
-//
-// Scripts
-// 
-
-window.addEventListener('DOMContentLoaded', event => {
-
-    // Navbar shrink function
-    var navbarShrink = function () {
-        const navbarCollapsible = document.body.querySelector('#mainNav');
-        if (!navbarCollapsible) {
-            return;
-        }
-        if (window.scrollY === 0) {
-            navbarCollapsible.classList.remove('navbar-shrink')
-        } else {
-            navbarCollapsible.classList.add('navbar-shrink')
-        }
-
-    };
-
-    // Shrink the navbar 
-    navbarShrink();
-
-    // Shrink the navbar when page is scrolled
-    document.addEventListener('scroll', navbarShrink);
-
-    // Activate Bootstrap scrollspy on the main nav element
-    const mainNav = document.body.querySelector('#mainNav');
-    if (mainNav) {
-        new bootstrap.ScrollSpy(document.body, {
-            target: '#mainNav',
-            offset: 74,
-        });
-    };
-
-    // Collapse responsive navbar when toggler is visible
-    const navbarToggler = document.body.querySelector('.navbar-toggler');
-    const responsiveNavItems = [].slice.call(
-        document.querySelectorAll('#navbarResponsive .nav-link')
-    );
-    responsiveNavItems.map(function (responsiveNavItem) {
-        responsiveNavItem.addEventListener('click', () => {
-            if (window.getComputedStyle(navbarToggler).display !== 'none') {
-                navbarToggler.click();
-            }
-        });
-    });
-
-});
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+import { auth } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-apiKey: "AIzaSyD2vjfd8ccYT1zoFn7oq-EkNQR-hPI2e-k",
-authDomain: "ambagan-database.firebaseapp.com",
-projectId: "ambagan-database",
-storageBucket: "ambagan-database.appspot.com",
-messagingSenderId: "922544539122",
-appId: "1:922544539122:web:5764aa10ede10104da576b"
+apiKey: "AIzaSyA2Jvh_90n3fv2MDVuVBq_-v4tkSh3RuBo",
+authDomain: "ambagan-philippines.firebaseapp.com",
+projectId: "ambagan-philippines",
+storageBucket: "ambagan-philippines.appspot.com",
+messagingSenderId: "782143642194",
+appId: "1:782143642194:web:1f9bf5751f031f0929dd8b"
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-// Initialize variables
-const auth = firebase.auth();
-const database = firebase.database();
+const app = initializeApp(firebaseConfig);
 
 function register()  {
-    email = document.getElementByID('email').value
-    password = document.getElementByID('password').value
-    firstName = document.getElementByID('firstName').value
-    middleName = document.getElementByID('middleName').value
-    surname = document.getElementByID('surname').value
-    phoneNumber = document.getElementByID('phoneNumber').value
-
-    if (validate_email(email) == false || validate_password(password) == false) {
+    var email = document.getElementById('email').value
+    var password = document.getElementById('password').value
+    var firstName = document.getElementById('firstName').value
+    var middleName = document.getElementById('middleName').value
+    var surname = document.getElementById('surname').value
+    var phoneNumber = document.getElementById('phoneNumber').value
+    
+    /*if (validate_email(email) == false || validate_password(password) == false) {
         alert('email or password invalid')
     }
 
     if (validate_field(firstName) == false || validate_field(middleName) == false || validate_field(surname) == false)
     {
         alert('One or more of the fields are invalid')
-    }
+    }*/
+    auth.createUserWithEmailAndPassword(email, password).then(function() {
+        var user = firebase.auth().currentUser
 
-    auth.createUserWithEmailAndPassword(email, passsword)
-    .then(function() {
-        var user = auth.currentUser
-
-        var database_ref = database.ref()
+        alert('User Created')
+        /*var database_ref = database.ref()
         var user_data = {
             email : email,
             firstName : firstName,
@@ -102,11 +48,15 @@ function register()  {
         }
 
         database_ref.child('users/' + user.uid).set(user_data)
-
-        alert('User Created');
+*/
+        alert('User Created')
+    }).catch(function(error) {
+        var errorcode = error.code
+        var errormsg = error.message
+        alert(errormsg)
     })
 }
-
+/*
 function validate_email(email) {
     expression = /^[^@]+@\w+(\.\w+)+\w$/
     if (expression.test(email) == true)  {
@@ -137,4 +87,4 @@ function validate_field(field) {
     else {
         return true
     }
-}
+}*/
