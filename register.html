@@ -41,7 +41,7 @@
             <div class="container">
                     <h2 class="section-heading text-uppercase">Be A Volunteer! Sign Up Now!</h2>
                     <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-                    <form id="loginForm">
+                    <div id="loginForm">
                     <div class="row align-items-stretch mb-5">
                         <center>
                         <div class="col-md-6">
@@ -70,12 +70,49 @@
                                 <input class="form-control" id="phoneNumber" type="tel" placeholder="Your Phone Number *"/>
                             </div>
                             <br>
-                            <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit" onclick="register()">Get Started</button>
-                             
+                            <button class="btn btn-primary btn-xl text-uppercase" id="submitButton">Get Started</button>
+                            <script type="module">
+                                // Import the functions you need from the SDKs you need
+                                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+                                import {getAuth, createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+                                // TODO: Add SDKs for Firebase products that you want to use
+                                // https://firebase.google.com/docs/web/setup#available-libraries
+
+                                // Your web app's Firebase configuration
+                                const firebaseConfig = {
+                                    apiKey: "AIzaSyD2vjfd8ccYT1zoFn7oq-EkNQR-hPI2e-k",
+                                    authDomain: "ambagan-database.firebaseapp.com",
+                                    databaseURL: "https://ambagan-database-default-rtdb.asia-southeast1.firebasedatabase.app",
+                                    projectId: "ambagan-database",
+                                    storageBucket: "ambagan-database.appspot.com",
+                                    messagingSenderId: "922544539122",
+                                    appId: "1:922544539122:web:b710fa20edb71f0ada576b"
+                                };
+
+                                // Initialize Firebase
+                                const app = initializeApp(firebaseConfig);
+                                const auth = getAuth(app);
+
+                                document.getElementById("submitButton").addEventListener('click', function(){
+                                        var email = document.getElementById('email').value
+                                        var password = document.getElementById('password').value
+
+                                        createUserWithEmailAndPassword(auth, email, password)
+                                        .then((userCredential) => {
+                                            const user = userCredential.user;
+                                            window.location.href = "registrationSuccess.html";
+                                        })
+                                        .catch((error) => {
+                                            const errorCode = error.code
+                                            const errorMsg = error.message
+                                            alert(errorCode + errorMsg)
+                                        })
+                                })
+                                </script>
                         </div>
                     </center>
                     </div>
-                </form>
+                </div>
             </div>
         </header>
         <!-- Footer-->
