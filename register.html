@@ -27,11 +27,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index#volunteerism">Volunteerism</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#activities">Activities</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#organization">Organization</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#beavolunteer">Be A Volunteer!</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#volunteerism">Volunteerism</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#activities">Activities</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#organization">Organization</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#beavolunteer">Be A Volunteer!</a></li>
                     </ul>
                 </div>
             </div>
@@ -94,33 +94,41 @@
                                 const app = initializeApp(firebaseConfig);
                                 const auth = getAuth(app);
                                 const database = getDatabase(app);
-                                
+
                                 document.getElementById("submitButton").addEventListener('click', function(){
                                     var email = document.getElementById('email').value
-                                    var password = document.getElementById('password').value
+                                    var password = document.getElementById('password').value                                    
                                     var firstName = document.getElementById('firstName').value
                                     var middleName = document.getElementById('middleName').value
                                     var surname = document.getElementById('surname').value
                                     var phoneNumber = document.getElementById('phoneNumber').value
+                                    var userId;
+                                        createUserWithEmailAndPassword(auth, email, password)
+                                        .then((userCredential) => {
+                                            const user = userCredential.user;
+                                            userId = user.uid;
+                                        })
+                                        .catch((error) => {
+                                            const errorCode = error.code
+                                            const errorMsg = error.message
+                                            alert(errorCode + errorMsg)
+                                        })
 
-                                    createUserWithEmailAndPassword(auth, email, password)
-                                    .then((userCredential) => {
-                                        const user = userCredential.user;
-                                    })
-                                    .catch((error) => {
-                                        const errorCode = error.code
-                                        const errorMsg = error.message
-                                        alert(errorCode + errorMsg)
-                                    })
-
-                                    set(ref(database, 'members/'), {
+                                        set(ref(database, 'members/' + userId), {
                                         email : email,
                                         firstName : firstName,
                                         surname : surname,
                                         phoneNumber : phoneNumber
-                                    })
-                                    
-                                    window.location.href = "registrationSuccess.html";
+                                        }) 
+                                        .then(){
+                                            window.location.href = "registrationSuccess";
+                                        }                                       
+                                        .catch((error) => {
+                                            const errorCode = error.code
+                                            const errorMsg = error.message
+                                            alert(errorCode + errorMsg)
+                                        })
+
                                 })
                                 </script>
                         </div>
