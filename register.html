@@ -47,35 +47,31 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <!-- Email address input-->
-                                <input class="form-control" id="email" type="email" placeholder="Your Email *"/>
+                                <input class="form-control" id="username" type="text" placeholder="Your desired username *" required minlength="6" maxlength="12"/>
+                            </div>
+                            <div class="form-group">
+                                <!-- Email address input-->
+                                <input class="form-control" id="inputEmail" type="email" placeholder="Your email *" required/>
+                            </div>
+                            <div class="form-group">
+                                <!-- Email address input-->
+                                <input class="form-control" id="confirmationEmail" type="email" placeholder="Confirm email *" required/>
                             </div>
                             <div class="form-group mb-md-0">
                                 <!-- Phone number input-->
-                                <input class="form-control" id="password" type="password" placeholder="Your Password *"/>
+                                <input class="form-control" id="inputPassword" type="password" placeholder="Your password *" required minlength="6" maxlength="12"/>
                             </div>
-                            <div class="form-group">
-                                <!-- First Name input-->
-                                <input class="form-control" id="firstName" type="text" placeholder="Your First Name *"/>
-                            </div>
-                            <div class="form-group">
-                                <!-- Middle Name input-->
-                                <input class="form-control" id="middleName" type="text" placeholder="Your Middle Name *"/>
-                            </div>
-                            <div class="form-group">
-                                <!-- Surname input-->
-                                <input class="form-control" id="surname" type="text" placeholder="Your Surname *"/>
-                            </div>
-                            <div class="form-group">
-                                <!-- Phone Number input-->
-                                <input class="form-control" id="phoneNumber" type="tel" placeholder="Your Phone Number *"/>
+                            <div class="form-group mb-md-0">
+                                <!-- Phone number input-->
+                                <input class="form-control" id="confirmationPassword" type="password" placeholder="Confirm password *" required minlength="6" maxlength="12"/>
                             </div>
                             <br>
                             <button class="btn btn-primary btn-xl text-uppercase" id="submitButton">Get Started</button>
                             <script type="module">
                                 // Import the functions you need from the SDKs you need
-                                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-                                import {getAuth, createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-                                import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+                                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js" 
+                                import {getAuth, createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js" 
+                                import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js" 
                                 // TODO: Add SDKs for Firebase products that you want to use
                                 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -88,48 +84,175 @@
                                     storageBucket: "ambagan-database.appspot.com",
                                     messagingSenderId: "922544539122",
                                     appId: "1:922544539122:web:b710fa20edb71f0ada576b"
-                                };
+                                } 
 
                                 // Initialize Firebase
-                                const app = initializeApp(firebaseConfig);
-                                const auth = getAuth(app);
-                                const database = getDatabase(app);
+                                const app = initializeApp(firebaseConfig) 
+                                const auth = getAuth(app) 
+                                const database = getDatabase(app) 
+                                    
+                                var username = document.getElementById('username')
+                                var inputEmail = document.getElementById('inputEmail')
+                                var confirmationEmail = document.getElementById('confirmationEmail')
+                                var inputPassword = document.getElementById('inputPassword')
+                                var confirmationPassword = document.getElementById('confirmationPassword')
+                                var validationArray = [false, false, false, false, false];
+
+                                window.addEventListener("DOMContentLoaded", function(){
+                                    username.addEventListener("keyup", function(){
+                                        if (username.validity.tooLong || username.validity.tooShort || username.validity.valueMissing) {
+                                          username.setCustomValidity("Name must be 6-12 characters.")
+                                          username.reportValidity()
+                                          validationArray[0] = false
+                                        }
+                                        else {
+                                          username.setCustomValidity("")
+                                          validationArray[0] = true
+                                        }
+
+                                        if (ValidateInput(validationArray)) {
+                                            submitButton.disabled = false;
+                                        }
+                                        else {
+                                            submitButton.disabled = true;
+                                        }
+                                    });
+
+                                    inputEmail.addEventListener("keyup", function(){
+                                        if (!ValidateEmail(inputEmail)) {
+                                          inputEmail.setCustomValidity("Invalid format. Please check your input.");
+                                          inputEmail.reportValidity()
+                                          validationArray[1] = false
+                                        }
+                                        else {
+                                          inputEmail.setCustomValidity("")
+                                          validationArray[1] = true
+                                        }
+
+                                        if (ValidateInput(validationArray)) {
+                                            submitButton.disabled = false;
+                                        }
+                                        else {
+                                            submitButton.disabled = true;
+                                        }
+                                    });
+
+                                    confirmationEmail.addEventListener("keyup", function(){
+                                        if (!ValidateEmail(confirmationEmail)) {
+                                          confirmationEmail.setCustomValidity("Invalid format. Please check your input.");
+                                          confirmationEmail.reportValidity();
+                                          validationArray[2] = false
+                                        }
+                                        else if (inputEmail.value != confirmationEmail.value) {
+                                          confirmationEmail.setCustomValidity("This email doesn't match your previous input. Please try again");
+                                          confirmationEmail.reportValidity();
+                                          validationArray[2] = false
+                                        }
+                                         else {
+                                          confirmationEmail.setCustomValidity("");
+                                          validationArray[2] = true
+                                        }
+
+                                        if (ValidateInput(validationArray)) {
+                                            submitButton.disabled = false;
+                                        }
+                                        else {
+                                            submitButton.disabled = true;
+                                        }
+                                    });
+
+                                    inputPassword.addEventListener("keyup", function(){
+                                        if (inputPassword.validity.tooLong || inputPassword.validity.tooShort || inputPassword.validity.valueMissing) {
+                                          inputPassword.setCustomValidity("Password must be 6-12 characters.");
+                                          inputPassword.reportValidity();
+                                          validationArray[3] = false
+                                        }
+                                        else {
+                                          inputPassword.setCustomValidity("");
+                                          validationArray[3] = true
+                                        }
+
+                                        if (ValidateInput(validationArray)) {
+                                            submitButton.disabled = false;
+                                        }
+                                        else {
+                                            submitButton.disabled = true;
+                                        }
+                                    });
+
+                                    confirmationPassword.addEventListener("keyup", function(){
+                                        if (confirmationPassword.validity.tooLong || confirmationPassword.validity.tooShort || confirmationPassword.validity.valueMissing) {
+                                          confirmationPassword.setCustomValidity("Password must be 6-12 characters.");
+                                          confirmationPassword.reportValidity();
+                                          validationArray[4] = false
+                                        }
+                                        else if (inputPassword.value != confirmationPassword.value) {
+                                          confirmationPassword.setCustomValidity("This password doesn't match your previous input. Please try again");
+                                          confirmationPassword.reportValidity();
+                                          validationArray[4] = false
+                                        }
+                                         else {
+                                          confirmationPassword.setCustomValidity("");
+                                          validationArray[4] = true
+                                        }
+
+                                        if (ValidateInput(validationArray)) {
+                                            submitButton.disabled = false;
+                                        }
+                                        else {
+                                            submitButton.disabled = true;
+                                        }
+                                    })
+                                })
+
 
                                 document.getElementById("submitButton").addEventListener('click', function(){
-                                    var email = document.getElementById('email').value
-                                    var password = document.getElementById('password').value                                    
-                                    var firstName = document.getElementById('firstName').value
-                                    var middleName = document.getElementById('middleName').value
-                                    var surname = document.getElementById('surname').value
-                                    var phoneNumber = document.getElementById('phoneNumber').value
-                                    var userId;
-                                        createUserWithEmailAndPassword(auth, email, password)
-                                        .then((userCredential) => {
-                                            const user = userCredential.user;
-                                            userId = user.uid;
-                                        })
-                                        .catch((error) => {
-                                            const errorCode = error.code
-                                            const errorMsg = error.message
-                                            alert(errorCode + errorMsg)
-                                        })
+                                    var usernameValue = username.value
+                                    var inputEmailValue = inputEmail.value
+                                    var passwordValue = inputPassword.value
 
-                                        set(ref(database, 'members/' + userId), {
-                                        email : email,
-                                        firstName : firstName,
-                                        surname : surname,
-                                        phoneNumber : phoneNumber
-                                        }) 
-                                        .then(){
-                                            window.location.href = "registrationSuccess";
-                                        }                                       
-                                        .catch((error) => {
-                                            const errorCode = error.code
-                                            const errorMsg = error.message
-                                            alert(errorCode + errorMsg)
-                                        })
+                                    createUserWithEmailAndPassword(auth, inputEmailValue, passwordValue)
+                                    .then((userCredential) => {
+                                        const user = userCredential.user
+                                    })
+                                    .catch((error) => {
+                                        const errorCode = error.code
+                                        const errorMsg = error.message
+                                        alert(errorCode + errorMsg)
+                                    })
 
+                                    set(ref(database, 'members/' + guid()), {
+                                        username : usernameValue,
+                                        email : inputEmailValue
+                                    });
+
+                                    window.location.href = "registrationSuccess";
+
+                                    function guid(){
+                                        let s4 = () => {
+                                            return Math.floor((1 + Math.random()) * 0x100000000000) 
+                                        }
+                                        return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4() 
+                                    }
                                 })
+
+                                function ValidateEmail(input) {
+                                 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input.value))
+                                  {
+                                    return (true)
+                                  }
+                                    return (false)
+                                }
+
+                                function ValidateInput(input) {
+                                    for (let i = 0; i < input.length; i++)
+                                    {
+                                        if (input[i] == false)
+                                            return false
+                                    }
+
+                                    return true
+                                }
                                 </script>
                         </div>
                     </center>
@@ -141,7 +264,7 @@
         <footer class="footer py-4">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2021</div>
+                    <div class="col-lg-4 text-lg-start">Copyright &copy  Your Website 2021</div>
                     <div class="col-lg-4 my-3 my-lg-0">
                         <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
