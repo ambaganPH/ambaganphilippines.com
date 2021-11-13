@@ -97,6 +97,7 @@
                                 var inputPassword = document.getElementById('inputPassword')
                                 var confirmationPassword = document.getElementById('confirmationPassword')
                                 var validationArray = [false, false, false, false, false];
+                                var isSuccess = false;
 
                                 window.addEventListener("DOMContentLoaded", function(){
                                     username.addEventListener("keyup", function(){
@@ -211,9 +212,15 @@
                                     var inputEmailValue = inputEmail.value
                                     var passwordValue = inputPassword.value
 
+                                    set(ref(database, 'accounts/' + guid()), {
+                                        username : usernameValue,
+                                        email : inputEmailValue
+                                    });
+
                                     createUserWithEmailAndPassword(auth, inputEmailValue, passwordValue)
                                     .then((userCredential) => {
                                         const user = userCredential.user
+                                        window.location.href = "registrationSuccess";
                                     })
                                     .catch((error) => {
                                         const errorCode = error.code
@@ -221,18 +228,14 @@
                                         alert(errorCode + errorMsg)
                                     })
 
-                                    set(ref(database, 'members/' + guid()), {
-                                        username : usernameValue,
-                                        email : inputEmailValue
-                                    });
-
-                                    window.location.href = "registrationSuccess";
-
-                                    function guid(){
+                                    function guid() {
                                         let s4 = () => {
-                                            return Math.floor((1 + Math.random()) * 0x100000000000) 
+                                            return Math.floor((1 + Math.random()) * 0x10000)
+                                                .toString(16)
+                                                .substring(1);
                                         }
-                                        return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4() 
+                                        //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
+                                        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
                                     }
                                 })
 
