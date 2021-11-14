@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Register: Ambagan Philippines</title>
+        <title>Login: Ambagan Philippines</title>
         <!-- Favicon-->
         <link rel="icon" href="assets/ambaganPH_favicon.ico" />
         <!-- Font Awesome icons (free version)-->
@@ -14,6 +14,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
+        <script src='https://www.gstatic.com/firebasejs/9.4.0/firebase.js'></script>
         <link href="css/styles.css" rel="stylesheet" />
     </head>
     <body id="page-top">
@@ -39,39 +40,26 @@
                 <!-- Masthead-->
         <header class="masthead">
             <div class="container">
-                    <h2 class="section-heading text-uppercase">Be A Volunteer! Sign Up Now!</h2>
-                    <h3 class="section-subheading text-muted">Be an ambagan volunteer and lets make this world a better place.</h3>
+                    <h2 class="section-heading text-uppercase">Welcome Ambagan Volunteer!</h2>
+                    <h3 class="section-subheading text-muted">Please type your email and password to login</h3>
                     <div id="loginForm">
                     <div class="row align-items-stretch mb-5">
                         <center>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <!-- Email address input-->
-                                <input class="form-control" id="username" type="text" placeholder="Your desired username *" required minlength="6" maxlength="12"/>
-                            </div>
-                            <div class="form-group">
-                                <!-- Email address input-->
                                 <input class="form-control" id="inputEmail" type="email" placeholder="Your email *" required/>
-                            </div>
-                            <div class="form-group">
-                                <!-- Email address input-->
-                                <input class="form-control" id="confirmationEmail" type="email" placeholder="Confirm email *" required/>
                             </div>
                             <div class="form-group mb-md-0">
                                 <!-- Phone number input-->
                                 <input class="form-control" id="inputPassword" type="password" placeholder="Your password *" required minlength="6" maxlength="12"/>
                             </div>
-                            <div class="form-group mb-md-0">
-                                <!-- Phone number input-->
-                                <input class="form-control" id="confirmationPassword" type="password" placeholder="Confirm password *" required minlength="6" maxlength="12"/>
-                            </div>
                             <br>
-                            <button class="btn btn-primary btn-xl text-uppercase" id="submitButton">Get Started</button>
+                            <button class="btn btn-primary btn-xl text-uppercase" id="submitButton">Login</button>
                             <script type="module">
                                 // Import the functions you need from the SDKs you need
                                 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js" 
-                                import {getAuth, createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js" 
-                                import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js" 
+                                import {getAuth, signInWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js" 
                                 // TODO: Add SDKs for Firebase products that you want to use
                                 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -88,70 +76,23 @@
 
                                 // Initialize Firebase
                                 const app = initializeApp(firebaseConfig) 
-                                const auth = getAuth(app) 
-                                const database = getDatabase(app) 
+                                const auth = getAuth(app)
                                     
-                                var username = document.getElementById('username')
                                 var inputEmail = document.getElementById('inputEmail')
-                                var confirmationEmail = document.getElementById('confirmationEmail')
                                 var inputPassword = document.getElementById('inputPassword')
-                                var confirmationPassword = document.getElementById('confirmationPassword')
-                                var validationArray = [false, false, false, false, false];
+                                var validationArray = [false, false];
                                 var isSuccess = false;
 
                                 window.addEventListener("DOMContentLoaded", function(){
-                                    username.addEventListener("keyup", function(){
-                                        if (username.validity.tooLong || username.validity.tooShort || username.validity.valueMissing) {
-                                          username.setCustomValidity("Name must be 6-12 characters.")
-                                          username.reportValidity()
-                                          validationArray[0] = false
-                                        }
-                                        else {
-                                          username.setCustomValidity("")
-                                          validationArray[0] = true
-                                        }
-
-                                        if (ValidateInput(validationArray)) {
-                                            submitButton.disabled = false;
-                                        }
-                                        else {
-                                            submitButton.disabled = true;
-                                        }
-                                    });
-
                                     inputEmail.addEventListener("keyup", function(){
                                         if (!ValidateEmail(inputEmail)) {
                                           inputEmail.setCustomValidity("Invalid format. Please check your input.");
                                           inputEmail.reportValidity()
-                                          validationArray[1] = false
+                                          validationArray[0] = false
                                         }
                                         else {
                                           inputEmail.setCustomValidity("")
-                                          validationArray[1] = true
-                                        }
-
-                                        if (ValidateInput(validationArray)) {
-                                            submitButton.disabled = false;
-                                        }
-                                        else {
-                                            submitButton.disabled = true;
-                                        }
-                                    });
-
-                                    confirmationEmail.addEventListener("keyup", function(){
-                                        if (!ValidateEmail(confirmationEmail)) {
-                                          confirmationEmail.setCustomValidity("Invalid format. Please check your input.");
-                                          confirmationEmail.reportValidity();
-                                          validationArray[2] = false
-                                        }
-                                        else if (inputEmail.value != confirmationEmail.value) {
-                                          confirmationEmail.setCustomValidity("This email doesn't match your previous input. Please try again");
-                                          confirmationEmail.reportValidity();
-                                          validationArray[2] = false
-                                        }
-                                         else {
-                                          confirmationEmail.setCustomValidity("");
-                                          validationArray[2] = true
+                                          validationArray[0] = true
                                         }
 
                                         if (ValidateInput(validationArray)) {
@@ -166,11 +107,11 @@
                                         if (inputPassword.validity.tooLong || inputPassword.validity.tooShort || inputPassword.validity.valueMissing) {
                                           inputPassword.setCustomValidity("Password must be 6-12 characters.");
                                           inputPassword.reportValidity();
-                                          validationArray[3] = false
+                                          validationArray[1] = false
                                         }
                                         else {
                                           inputPassword.setCustomValidity("");
-                                          validationArray[3] = true
+                                          validationArray[1] = true
                                         }
 
                                         if (ValidateInput(validationArray)) {
@@ -180,62 +121,23 @@
                                             submitButton.disabled = true;
                                         }
                                     });
-
-                                    confirmationPassword.addEventListener("keyup", function(){
-                                        if (confirmationPassword.validity.tooLong || confirmationPassword.validity.tooShort || confirmationPassword.validity.valueMissing) {
-                                          confirmationPassword.setCustomValidity("Password must be 6-12 characters.");
-                                          confirmationPassword.reportValidity();
-                                          validationArray[4] = false
-                                        }
-                                        else if (inputPassword.value != confirmationPassword.value) {
-                                          confirmationPassword.setCustomValidity("This password doesn't match your previous input. Please try again");
-                                          confirmationPassword.reportValidity();
-                                          validationArray[4] = false
-                                        }
-                                         else {
-                                          confirmationPassword.setCustomValidity("");
-                                          validationArray[4] = true
-                                        }
-
-                                        if (ValidateInput(validationArray)) {
-                                            submitButton.disabled = false;
-                                        }
-                                        else {
-                                            submitButton.disabled = true;
-                                        }
-                                    })
                                 })
 
 
                                 document.getElementById("submitButton").addEventListener('click', function(){
-                                    var usernameValue = username.value
                                     var inputEmailValue = inputEmail.value
                                     var passwordValue = inputPassword.value
 
-                                    set(ref(database, 'accounts/' + guid()), {
-                                        username : usernameValue,
-                                        email : inputEmailValue
-                                    });
 
-                                    createUserWithEmailAndPassword(auth, inputEmailValue, passwordValue)
+                                    signInWithEmailAndPassword(auth, inputEmailValue, passwordValue)
                                     .then((userCredential) => {
-                                        window.location.href = "registrationSuccess";
+                                        window.location.href = "loginSuccess";
                                     })
                                     .catch((error) => {
                                         const errorCode = error.code
                                         const errorMsg = error.message
                                         alert(errorCode + errorMsg)
                                     })
-
-                                    function guid() {
-                                        let s4 = () => {
-                                            return Math.floor((1 + Math.random()) * 0x10000)
-                                                .toString(16)
-                                                .substring(1);
-                                        }
-                                        //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
-                                        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-                                    }
                                 })
 
                                 function ValidateEmail(input) {
@@ -260,9 +162,6 @@
                     </center>
                     </div>
                 </div>
-                    <h2 class="section-heading text-uppercase">Already a member?</h2>
-                    <h3 class="section-subheading text-muted">You can login instead. Click the button below.</h3>
-                            <button class="btn btn-primary btn-xl text-uppercase" id="loginButton">Log in</button>
             </div>
         </header>
         <!-- Footer-->
