@@ -27,11 +27,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html#volunteerism">Volunteerism</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#activities">Activities</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#organization">Organization</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html#beavolunteer">Be A Volunteer!</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index#volunteerism">Volunteerism</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index#activities">Activities</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index#organization">Organization</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index#contactUs">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
@@ -40,7 +40,7 @@
         <header class="masthead">
             <div class="container">
                     <h2 class="section-heading text-uppercase">Be A Volunteer! Sign Up Now!</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h3 class="section-subheading text-muted">Be an ambagan volunteer and lets make this world a better place.</h3>
                     <div id="loginForm">
                     <div class="row align-items-stretch mb-5">
                         <center>
@@ -219,7 +219,8 @@
 
                                     createUserWithEmailAndPassword(auth, inputEmailValue, passwordValue)
                                     .then((userCredential) => {
-                                        const user = userCredential.user
+                                        const user = firebase.auth().currentUser;
+                                        alert(user)
                                         window.location.href = "registrationSuccess";
                                     })
                                     .catch((error) => {
@@ -261,6 +262,9 @@
                     </center>
                     </div>
                 </div>
+                    <h2 class="section-heading text-uppercase">Already a member?</h2>
+                    <h3 class="section-subheading text-muted">You can login instead. Click the button below.</h3>
+                            <button class="btn btn-primary btn-xl text-uppercase" id="loginButton">Log in</button>
             </div>
         </header>
         <!-- Footer-->
