@@ -15,6 +15,32 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <script src="js/city.js"></script> 
+        <script>
+            window.onload = function() {    
+
+                // ---------------
+                // basic usage
+                // ---------------
+                var $ = new City();
+                $.showProvinces("#province");
+                $.showCities("#city");
+
+                // ------------------
+                // additional methods 
+                // -------------------
+
+                // will return all provinces 
+                console.log($.getProvinces());
+                
+                // will return all cities 
+                console.log($.getAllCities());
+                
+                // will return all cities under specific province (e.g Batangas)
+                console.log($.getCities("Batangas"));   
+                
+            }
+        </script>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -234,6 +260,29 @@
                                   <option value="1901">1901</option>
                                   <option value="1900">1900</option>
                                 </select>
+                                <br>
+                                <br>
+                            <div class="form-group">
+                                <!-- Email address input-->
+                                <input class="form-control" id="address" type="text" placeholder=" House number, lot number, street *" required/>
+                            </div>
+                            <div class="form-group">
+                                <!-- Email address input-->
+                                <input class="form-control" id="barangay" type="text" placeholder=" Barangay *" required/>
+                            </div>
+                            <br>
+                            <select class="btn btn-primary btn-m text-uppercase" id="province"></select>
+                            <select class="btn btn-primary btn-m text-uppercase" id="city"></select> 
+                            <br>
+                            <br>
+                            <div class="form-group">
+                                <!-- Email address input-->
+                                <input class="form-control" id="contact" type="tel" placeholder=" Contact Number *" required/>
+                            </div>
+                            <div class="form-group">
+                                <!-- Email address input-->
+                                <input class="form-control" id="occupation" type="text" placeholder=" Occupation if working, course if student *" required/>
+                            </div>
                             <br>
                             <br>
                             <button class="btn btn-primary btn-xl text-uppercase" id="submitButton">Get Started</button>
