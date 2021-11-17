@@ -14,7 +14,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/styles-no-background.css" rel="stylesheet" />
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -27,11 +27,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index#volunteerism">Volunteerism</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#activities">Activities</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#organization">Organization</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#contactUs">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#volunteerism">Volunteerism</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#activities">Activities</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#organization">Organization</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#contactUs">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 <!-- Masthead-->
         <header class="masthead">
             <div class="container">
-                    <h2 class="section-heading text-uppercase">Be A Volunteer! Sign Up Now!</h2>
+                    <h2 class="section-heading text-uppercase text-muted">Be A Volunteer! Sign Up Now!</h2>
                     <h3 class="section-subheading text-muted">Be an ambagan volunteer and lets make this world a better place.</h3>
                     <div id="loginForm">
                     <div class="row align-items-stretch mb-5">
@@ -197,12 +197,12 @@
                                           validationArray[4] = true
                                         }
 
-                                        if (ValidateInput(validationArray)) {
+                                        /*if (ValidateInput(validationArray)) {
                                             submitButton.disabled = false;
                                         }
                                         else {
                                             submitButton.disabled = true;
-                                        }
+                                        }*/
                                     })
                                 })
 
@@ -260,7 +260,7 @@
                     </center>
                     </div>
                 </div>
-                    <h2 class="section-heading text-uppercase">Already a member?</h2>
+                    <h2 class="section-heading text-uppercase text-muted">Already a member?</h2>
                     <h3 class="section-subheading text-muted">You can login instead. Click the button below.</h3>
                             <button class="btn btn-primary btn-xl text-uppercase" id="loginButton">Log in</button>
             </div>

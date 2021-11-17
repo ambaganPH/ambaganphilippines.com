@@ -14,7 +14,7 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/styles-no-background.css" rel="stylesheet" />
         <script src="js/city.js"></script> 
         <script>
             window.onload = function() {    
@@ -53,11 +53,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index#volunteerism">Volunteerism</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#activities">Activities</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#organization">Organization</a></li>
-                        <li class="nav-item"><a class="nav-link" href="index#contactUs">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#volunteerism">Volunteerism</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#activities">Activities</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#organization">Organization</a></li>
+                        <li class="nav-item"><a class="nav-link text-muted" href="index#contactUs">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                 <!-- Masthead-->
         <header class="masthead">
             <div class="container">
-                    <h2 class="section-heading text-uppercase">Please fill out the information needed.</h2>
+                    <h2 class="section-heading text-uppercase text-muted">Please fill out the information needed.</h2>
                     <h3 class="section-subheading text-muted">You are one step closer to being an Ambagan Volunteer!</h3>
                     <div id="loginForm">
                     <div class="row align-items-stretch mb-5">
@@ -84,7 +84,7 @@
                                 <input class="form-control" id="surname" type="text" placeholder=" Surname *" required/>
                             </div>
                             <br>
-                            <h4 class="text-uppercase">Your birthday:</h4>
+                            <h4 class="text-uppercase text-muted">Your birthday:</h4>
                                 <select class="btn btn-primary btn-m text-uppercase" name="day" id="day">
                                   <option value="">Day</option>
                                   <option value="">---</option>
@@ -268,7 +268,7 @@
                             </div>
                             <div class="form-group">
                                 <!-- Email address input-->
-                                <input class="form-control" id="barangay" type="text" placeholder=" Barangay *" required/>
+                                <input class="form-control" id="barangay" type="text" placeholder=" Barangay, Subdivision, Village *" required/>
                             </div>
                             <br>
                             <select class="btn btn-primary btn-m text-uppercase" id="province"></select>
@@ -309,177 +309,152 @@
                                 const app = initializeApp(firebaseConfig) 
                                 const auth = getAuth(app) 
                                 const database = getDatabase(app) 
-                                    
-                                var username = document.getElementById('username')
-                                var inputEmail = document.getElementById('inputEmail')
-                                var confirmationEmail = document.getElementById('confirmationEmail')
-                                var inputPassword = document.getElementById('inputPassword')
-                                var confirmationPassword = document.getElementById('confirmationPassword')
-                                var validationArray = [false, false, false, false, false];
+
+                                function forceInputUppercase(e)
+                                {
+                                    var start = e.target.selectionStart;
+                                    var end = e.target.selectionEnd;
+                                    e.target.value = e.target.value.toUpperCase();
+                                    e.target.setSelectionRange(start, end);
+                                }
+
+                                function allLetter(inputtxt)
+                                  {
+                                   var letters = /^[A-Za-z\s]+$/;
+                                   if(inputtxt.value.match(letters))
+                                     {
+                                      return true;
+                                     }
+                                   else
+                                     {
+                                     return false;
+                                     }
+                                  }
+
+                                var firstName = document.getElementById('firstName')
+                                var middleName = document.getElementById('middleName')
+                                var surname = document.getElementById('surname')
+                                var address = document.getElementById('address')
+                                var barangay = document.getElementById('barangay')
+                                var contact = document.getElementById('contact')
+                                var occupation = document.getElementById('occupation')
+                                var validationArray = [false, false, false, false, false, false, false];
                                 var isSuccess = false;
 
+                                firstName.addEventListener("keyup", forceInputUppercase, false);
+                                middleName.addEventListener("keyup", forceInputUppercase, false);
+                                surname.addEventListener("keyup", forceInputUppercase, false);
+                                address.addEventListener("keyup", forceInputUppercase, false);
+                                barangay.addEventListener("keyup", forceInputUppercase, false);
+                                contact.addEventListener("keyup", forceInputUppercase, false);
+                                occupation.addEventListener("keyup", forceInputUppercase, false);
+
                                 window.addEventListener("DOMContentLoaded", function(){
-                                    username.addEventListener("keyup", function(){
-                                        if (username.validity.tooLong || username.validity.tooShort || username.validity.valueMissing) {
-                                          username.setCustomValidity("Name must be 6-12 characters.")
-                                          username.reportValidity()
+                                    firstName.addEventListener("keyup", function(){
+                                        if (firstName.validity.valueMissing) {
+                                          firstName.setCustomValidity("First name is required.")
+                                          firstName.reportValidity()
+                                          validationArray[0] = false                                   
+                                        }
+                                        else if (!allLetter(firstName)) {
+                                          firstName.setCustomValidity("First name should all be letters.")
+                                          firstName.reportValidity()
                                           validationArray[0] = false
                                         }
                                         else {
-                                          username.setCustomValidity("")
+                                          firstName.setCustomValidity("")
                                           validationArray[0] = true
-                                        }
-
-                                        if (ValidateInput(validationArray)) {
-                                            submitButton.disabled = false;
-                                        }
-                                        else {
-                                            submitButton.disabled = true;
                                         }
                                     });
 
-                                    inputEmail.addEventListener("keyup", function(){
-                                        if (!ValidateEmail(inputEmail)) {
-                                          inputEmail.setCustomValidity("Invalid format. Please check your input.");
-                                          inputEmail.reportValidity()
+                                    middleName.addEventListener("keyup", function(){
+                                        if (middleName.validity.valueMissing) {
+                                          middleName.setCustomValidity("Middle name is required.")
+                                          middleName.reportValidity()
+                                          validationArray[1] = false                                   
+                                        }
+                                        else if (!allLetter(middleName)) {
+                                          middleName.setCustomValidity("Middle name should all be letters.")
+                                          middleName.reportValidity()
                                           validationArray[1] = false
                                         }
                                         else {
-                                          inputEmail.setCustomValidity("")
+                                          middleName.setCustomValidity("")
                                           validationArray[1] = true
                                         }
-
-                                        if (ValidateInput(validationArray)) {
-                                            submitButton.disabled = false;
-                                        }
-                                        else {
-                                            submitButton.disabled = true;
-                                        }
                                     });
 
-                                    confirmationEmail.addEventListener("keyup", function(){
-                                        if (!ValidateEmail(confirmationEmail)) {
-                                          confirmationEmail.setCustomValidity("Invalid format. Please check your input.");
-                                          confirmationEmail.reportValidity();
+                                    surname.addEventListener("keyup", function(){
+                                        if (surname.validity.valueMissing) {
+                                          surname.setCustomValidity("Surname is required.")
+                                          surname.reportValidity()
+                                          validationArray[2] = false                                   
+                                        }
+                                        else if (!allLetter(surname)) {
+                                          surname.setCustomValidity("Surname should all be letters.")
+                                          surname.reportValidity()
                                           validationArray[2] = false
                                         }
-                                        else if (inputEmail.value != confirmationEmail.value) {
-                                          confirmationEmail.setCustomValidity("This email doesn't match your previous input. Please try again");
-                                          confirmationEmail.reportValidity();
-                                          validationArray[2] = false
-                                        }
-                                         else {
-                                          confirmationEmail.setCustomValidity("");
+                                        else {
+                                          surname.setCustomValidity("")
                                           validationArray[2] = true
                                         }
-
-                                        if (ValidateInput(validationArray)) {
-                                            submitButton.disabled = false;
-                                        }
-                                        else {
-                                            submitButton.disabled = true;
-                                        }
                                     });
 
-                                    inputPassword.addEventListener("keyup", function(){
-                                        if (inputPassword.validity.tooLong || inputPassword.validity.tooShort || inputPassword.validity.valueMissing) {
-                                          inputPassword.setCustomValidity("Password must be 6-12 characters.");
-                                          inputPassword.reportValidity();
-                                          validationArray[3] = false
+                                    address.addEventListener("keyup", function(){
+                                        if (address.validity.valueMissing) {
+                                          address.setCustomValidity("Address is required.")
+                                          address.reportValidity()
+                                          validationArray[3] = false                                   
                                         }
                                         else {
-                                          inputPassword.setCustomValidity("");
+                                          address.setCustomValidity("")
                                           validationArray[3] = true
                                         }
-
-                                        if (ValidateInput(validationArray)) {
-                                            submitButton.disabled = false;
-                                        }
-                                        else {
-                                            submitButton.disabled = true;
-                                        }
                                     });
 
-                                    confirmationPassword.addEventListener("keyup", function(){
-                                        if (confirmationPassword.validity.tooLong || confirmationPassword.validity.tooShort || confirmationPassword.validity.valueMissing) {
-                                          confirmationPassword.setCustomValidity("Password must be 6-12 characters.");
-                                          confirmationPassword.reportValidity();
-                                          validationArray[4] = false
+                                    barangay.addEventListener("keyup", function(){
+                                        if (barangay.validity.valueMissing) {
+                                          barangay.setCustomValidity("Address is required.")
+                                          barangay.reportValidity()
+                                          validationArray[4] = false                                   
                                         }
-                                        else if (inputPassword.value != confirmationPassword.value) {
-                                          confirmationPassword.setCustomValidity("This password doesn't match your previous input. Please try again");
-                                          confirmationPassword.reportValidity();
-                                          validationArray[4] = false
-                                        }
-                                         else {
-                                          confirmationPassword.setCustomValidity("");
+                                        else {
+                                          barangay.setCustomValidity("")
                                           validationArray[4] = true
                                         }
-
-                                        if (ValidateInput(validationArray)) {
-                                            submitButton.disabled = false;
-                                        }
-                                        else {
-                                            submitButton.disabled = true;
-                                        }
-                                    })
-                                })
-
-
-                                document.getElementById("submitButton").addEventListener('click', function(){
-                                    var usernameValue = username.value
-                                    var inputEmailValue = inputEmail.value
-                                    var passwordValue = inputPassword.value
-
-                                    set(ref(database, 'accounts/' + guid()), {
-                                        username : usernameValue,
-                                        email : inputEmailValue
                                     });
 
-                                    createUserWithEmailAndPassword(auth, inputEmailValue, passwordValue)
-                                    .then((userCredential) => {
-                                        window.location.href = "informationSheet";
-                                    })
-                                    .catch((error) => {
-                                        const errorCode = error.code
-                                        const errorMsg = error.message
-                                        alert(errorCode + errorMsg)
-                                    })
-
-                                    function guid() {
-                                        let s4 = () => {
-                                            return Math.floor((1 + Math.random()) * 0x10000)
-                                                .toString(16)
-                                                .substring(1);
+                                    contact.addEventListener("keyup", function(){
+                                        if (contact.validity.valueMissing) {
+                                          contact.setCustomValidity("Contact number is required.")
+                                          contact.reportValidity()
+                                          validationArray[5] = false                                   
                                         }
-                                        //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
-                                        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-                                    }
+                                        else {
+                                          contact.setCustomValidity("")
+                                          validationArray[5] = true
+                                        }
+                                    });
+
+                                    occupation.addEventListener("keyup", function(){
+                                        if (occupation.validity.valueMissing) {
+                                          occupation.setCustomValidity("Occupation/course is required.")
+                                          occupation.reportValidity()
+                                          validationArray[6] = false                                   
+                                        }
+                                        else {
+                                          occupation.setCustomValidity("")
+                                          validationArray[6] = true
+                                        }
+                                    });
                                 })
-
-                                function ValidateEmail(input) {
-                                 if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input.value))
-                                  {
-                                    return (true)
-                                  }
-                                    return (false)
-                                }
-
-                                function ValidateInput(input) {
-                                    for (let i = 0; i < input.length; i++)
-                                    {
-                                        if (input[i] == false)
-                                            return false
-                                    }
-
-                                    return true
-                                }
                                 </script>
                         </div>
                     </center>
                     </div>
                 </div>
-                    <h2 class="section-heading text-uppercase">Already a member?</h2>
+                    <h2 class="section-heading text-uppercase text-muted">Already a member?</h2>
                     <h3 class="section-subheading text-muted">You can login instead. Click the button below.</h3>
                             <button class="btn btn-primary btn-xl text-uppercase" id="loginButton">Log in</button>
             </div>
