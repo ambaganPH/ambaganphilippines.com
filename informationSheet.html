@@ -325,13 +325,8 @@
                                 var firstName = document.getElementById('firstName')
                                 var middleName = document.getElementById('middleName')
                                 var surname = document.getElementById('surname')
-                                var day = document.getElementById('day')
-                                var month = document.getElementById('month')
-                                var year = document.getElementById('year')
                                 var address = document.getElementById('address')
                                 var barangay = document.getElementById('barangay')
-                                var province = document.getElementById('province')
-                                var city = document.getElementById('city')
                                 var contact = document.getElementById('contact')
                                 var occupation = document.getElementById('occupation')
                                 var validationArray = [false, false, false, false, false, false, false];
@@ -466,24 +461,11 @@
                                 })
 
                                 document.getElementById("submitButton").addEventListener('click', function(){
-                                    var usernameValue = username.value
-                                    var firstNameValue = firstName.value
-                                    var middleNameValue = middleName.value
-                                    var surnameValue = surname.value
-                                    var usernameValue = username.value
-                                    var usernameValue = username.value
-                                    var usernameValue = username.value
-                                    var dayValue = select.options[day.selectedIndex].value;
-                                    var monthValue = select.options[month.selectedIndex].value;
-                                    var yearValue = select.options[year.selectedIndex].value;
-                                    var provinceValue = select.options[province.selectedIndex].value;
-                                    var cityValue = select.options[city.selectedIndex].value;
 
                                     onAuthStateChanged(auth, (user) => {
                                       if (user) {
                                         const uid = user.uid;
                                         addDatabase(uid);
-                                        window.location.href = "registrationSuccess";
                                       } 
                                       else {
 
@@ -491,19 +473,31 @@
                                     });
 
                                     function addDatabase (uid) {
-                                        set(ref(database, 'accounts/' + uid), {
-                                            username : usernameValue
-                                        });
-                                    }
+                                        var usernameValue = username.value
+                                        var firstNameValue = firstName.value
+                                        var middleNameValue = middleName.value
+                                        var surnameValue = surname.value
+                                        var dayValue = day.options[day.selectedIndex].value;
+                                        var monthValue = month.options[month.selectedIndex].value;
+                                        var yearValue = year.options[year.selectedIndex].value;
+                                        var addressValue = address.value
+                                        var barangayValue = barangay.value
+                                        var cityValue = city.options[city.selectedIndex].value;
+                                        var provinceValue = province.options[province.selectedIndex].value;
 
-                                    function guid() {
-                                        let s4 = () => {
-                                            return Math.floor((1 + Math.random()) * 0x10000)
-                                                .toString(16)
-                                                .substring(1);
-                                        }
-                                        //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
-                                        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+                                        set(ref(database, 'accounts/' + uid), {
+                                            username : usernameValue,
+                                            firstName : firstNameValue,
+                                            middleName : middleNameValue,
+                                            surname : surnameValue,
+                                            birthday : dayValue,
+                                            birthmonth : monthValue,
+                                            birthyear : yearValue,
+                                            address : addressValue,
+                                            barangay : barangayValue,
+                                            city : cityValue,
+                                            province : provinceValue
+                                        });
                                     }
                                 })
                                 </script>
