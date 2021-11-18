@@ -186,13 +186,11 @@
 
 
                                 document.getElementById("submitButton").addEventListener('click', function(){
-                                    var usernameValue = username.value
                                     var inputEmailValue = inputEmail.value
                                     var passwordValue = inputPassword.value
 
                                     createUserWithEmailAndPassword(auth, inputEmailValue, passwordValue)
                                     .then((userCredential) => {
-                                        const user = userCredential.user;
                                         window.location.href = "informationSheet";
                                     })
                                     .catch((error) => {
@@ -200,19 +198,6 @@
                                         const errorMsg = error.message
                                         alert(errorCode + errorMsg)
                                     })
-                                    
-
-                                    function 
-
-                                    function guid() {
-                                        let s4 = () => {
-                                            return Math.floor((1 + Math.random()) * 0x10000)
-                                                .toString(16)
-                                                .substring(1);
-                                        }
-                                        //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
-                                        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-                                    }
                                 })
 
                                 function ValidateEmail(input) {
