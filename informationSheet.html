@@ -25,20 +25,6 @@
                 var $ = new City();
                 $.showProvinces("#province");
                 $.showCities("#city");
-
-                // ------------------
-                // additional methods 
-                // -------------------
-
-                // will return all provinces 
-                console.log($.getProvinces());
-                
-                // will return all cities 
-                console.log($.getAllCities());
-                
-                // will return all cities under specific province (e.g Batangas)
-                console.log($.getCities("Batangas"));   
-                
             }
         </script>
     </head>
@@ -71,6 +57,10 @@
                     <div class="row align-items-stretch mb-5">
                         <center>
                         <div class="col-md-6">
+                            <div class="form-group">
+                                <!-- Email address input-->
+                                <input class="form-control" id="username" type="text" placeholder="Your desired username *" required minlength="6" maxlength="12"/>
+                            </div>
                             <div class="form-group">
                                 <!-- Email address input-->
                                 <input class="form-control" id="firstName" type="text" placeholder=" First Name *" required/>
@@ -289,7 +279,7 @@
                             <script type="module">
                                 // Import the functions you need from the SDKs you need
                                 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js" 
-                                import {getAuth, createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js" 
+                                import {getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js" 
                                 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js" 
                                 // TODO: Add SDKs for Firebase products that you want to use
                                 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -331,11 +321,17 @@
                                      }
                                   }
 
+                                var username = document.getElementById('username')
                                 var firstName = document.getElementById('firstName')
                                 var middleName = document.getElementById('middleName')
                                 var surname = document.getElementById('surname')
+                                var day = document.getElementById('day')
+                                var month = document.getElementById('month')
+                                var year = document.getElementById('year')
                                 var address = document.getElementById('address')
                                 var barangay = document.getElementById('barangay')
+                                var province = document.getElementById('province')
+                                var city = document.getElementById('city')
                                 var contact = document.getElementById('contact')
                                 var occupation = document.getElementById('occupation')
                                 var validationArray = [false, false, false, false, false, false, false];
@@ -350,20 +346,39 @@
                                 occupation.addEventListener("keyup", forceInputUppercase, false);
 
                                 window.addEventListener("DOMContentLoaded", function(){
+                                    username.addEventListener("keyup", function(){
+                                        if (username.validity.tooLong || username.validity.tooShort || username.validity.valueMissing) {
+                                          username.setCustomValidity("Name must be 6-12 characters.")
+                                          username.reportValidity()
+                                          validationArray[0] = false
+                                        }
+                                        else {
+                                          username.setCustomValidity("")
+                                          validationArray[0] = true
+                                        }
+
+                                        if (ValidateInput(validationArray)) {
+                                            submitButton.disabled = false;
+                                        }
+                                        else {
+                                            submitButton.disabled = true;
+                                        }
+                                    });
+
                                     firstName.addEventListener("keyup", function(){
                                         if (firstName.validity.valueMissing) {
                                           firstName.setCustomValidity("First name is required.")
                                           firstName.reportValidity()
-                                          validationArray[0] = false                                   
+                                          validationArray[1] = false                                   
                                         }
                                         else if (!allLetter(firstName)) {
                                           firstName.setCustomValidity("First name should all be letters.")
                                           firstName.reportValidity()
-                                          validationArray[0] = false
+                                          validationArray[1] = false
                                         }
                                         else {
                                           firstName.setCustomValidity("")
-                                          validationArray[0] = true
+                                          validationArray[1] = true
                                         }
                                     });
 
@@ -371,16 +386,16 @@
                                         if (middleName.validity.valueMissing) {
                                           middleName.setCustomValidity("Middle name is required.")
                                           middleName.reportValidity()
-                                          validationArray[1] = false                                   
+                                          validationArray[2] = false                                   
                                         }
                                         else if (!allLetter(middleName)) {
                                           middleName.setCustomValidity("Middle name should all be letters.")
                                           middleName.reportValidity()
-                                          validationArray[1] = false
+                                          validationArray[2] = false
                                         }
                                         else {
                                           middleName.setCustomValidity("")
-                                          validationArray[1] = true
+                                          validationArray[2] = true
                                         }
                                     });
 
@@ -388,16 +403,16 @@
                                         if (surname.validity.valueMissing) {
                                           surname.setCustomValidity("Surname is required.")
                                           surname.reportValidity()
-                                          validationArray[2] = false                                   
+                                          validationArray[3] = false                                   
                                         }
                                         else if (!allLetter(surname)) {
                                           surname.setCustomValidity("Surname should all be letters.")
                                           surname.reportValidity()
-                                          validationArray[2] = false
+                                          validationArray[3] = false
                                         }
                                         else {
                                           surname.setCustomValidity("")
-                                          validationArray[2] = true
+                                          validationArray[3] = true
                                         }
                                     });
 
@@ -405,11 +420,11 @@
                                         if (address.validity.valueMissing) {
                                           address.setCustomValidity("Address is required.")
                                           address.reportValidity()
-                                          validationArray[3] = false                                   
+                                          validationArray[4] = false                                   
                                         }
                                         else {
                                           address.setCustomValidity("")
-                                          validationArray[3] = true
+                                          validationArray[4] = true
                                         }
                                     });
 
@@ -417,11 +432,11 @@
                                         if (barangay.validity.valueMissing) {
                                           barangay.setCustomValidity("Address is required.")
                                           barangay.reportValidity()
-                                          validationArray[4] = false                                   
+                                          validationArray[5] = false                                   
                                         }
                                         else {
                                           barangay.setCustomValidity("")
-                                          validationArray[4] = true
+                                          validationArray[5] = true
                                         }
                                     });
 
@@ -429,11 +444,11 @@
                                         if (contact.validity.valueMissing) {
                                           contact.setCustomValidity("Contact number is required.")
                                           contact.reportValidity()
-                                          validationArray[5] = false                                   
+                                          validationArray[6] = false                                   
                                         }
                                         else {
                                           contact.setCustomValidity("")
-                                          validationArray[5] = true
+                                          validationArray[6] = true
                                         }
                                     });
 
@@ -441,13 +456,55 @@
                                         if (occupation.validity.valueMissing) {
                                           occupation.setCustomValidity("Occupation/course is required.")
                                           occupation.reportValidity()
-                                          validationArray[6] = false                                   
+                                          validationArray[7] = false                                   
                                         }
                                         else {
                                           occupation.setCustomValidity("")
-                                          validationArray[6] = true
+                                          validationArray[7] = true
                                         }
                                     });
+                                })
+
+                                document.getElementById("submitButton").addEventListener('click', function(){
+                                    var usernameValue = username.value
+                                    var firstNameValue = firstName.value
+                                    var middleNameValue = middleName.value
+                                    var surnameValue = surname.value
+                                    var usernameValue = username.value
+                                    var usernameValue = username.value
+                                    var usernameValue = username.value
+                                    var dayValue = select.options[day.selectedIndex].value;
+                                    var monthValue = select.options[month.selectedIndex].value;
+                                    var yearValue = select.options[year.selectedIndex].value;
+                                    var provinceValue = select.options[province.selectedIndex].value;
+                                    var cityValue = select.options[city.selectedIndex].value;
+
+                                    onAuthStateChanged(auth, (user) => {
+                                      if (user) {
+                                        const uid = user.uid;
+                                        addDatabase(uid);
+                                        window.location.href = "registrationSuccess";
+                                      } 
+                                      else {
+
+                                      }
+                                    });
+
+                                    function addDatabase (uid) {
+                                        set(ref(database, 'accounts/' + uid), {
+                                            username : usernameValue
+                                        });
+                                    }
+
+                                    function guid() {
+                                        let s4 = () => {
+                                            return Math.floor((1 + Math.random()) * 0x10000)
+                                                .toString(16)
+                                                .substring(1);
+                                        }
+                                        //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
+                                        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+                                    }
                                 })
                                 </script>
                         </div>
